@@ -24,14 +24,7 @@ O TaskFlow é uma aplicação web completa para gerenciamento de projetos e tare
 - **📁 Gestão de Projetos**: Crie, edite e organize projetos em um único lugar
 - **✅ Sistema de Tarefas**: Gerencie tarefas com status, prioridades e prazos
 - **🏷️ Etiquetas Personalizadas**: Categorize tarefas com etiquetas flexíveis
-- **👥 Gestão de Usuários**: Sistema de autenticação e perfis de usuário
 - **🔌 API RESTful**: Integração completa via API para aplicações externas
-- **📱 Interface Responsiva**: Design moderno que funciona em todos os dispositivos
-- **🔍 Busca e Filtros**: Encontre projetos e tarefas rapidamente
-- **📊 Relatórios**: Visualize o progresso e estatísticas dos projetos
-- **🔔 Notificações**: Mantenha-se atualizado com as atividades do projeto
-- **🌐 Multi-idioma**: Suporte para português e inglês
-
 ## 🛠️ Stack Tecnológico
 
 ### Backend
@@ -43,19 +36,9 @@ O TaskFlow é uma aplicação web completa para gerenciamento de projetos e tare
 - **Validação**: Laravel Validator
 - **Filas**: Laravel Queues
 
-### Frontend
-- **Template Engine**: Blade
-- **CSS Framework**: Tailwind CSS
-- **JavaScript**: Vanilla JS + Alpine.js
-- **Build Tools**: Vite
-
 ### Infraestrutura
 - **Conteinerização**: Docker & Docker Compose
 - **Servidor Web**: PHP Built-in Server
-- **Cache**: Redis (opcional)
-- **Testes**: PHPUnit
-- **Quality Code**: Laravel Pint
-
 ## 📁 Estrutura do Projeto
 
 ```
@@ -176,25 +159,6 @@ Se preferir desenvolver sem Docker:
    php artisan serve
    ```
 
-#### Ambiente de Produção
-
-Para implantação em produção:
-
-1. **Otimize a aplicação**
-   ```bash
-   composer install --no-dev --optimize-autoloader
-   php artisan config:cache
-   php artisan route:cache
-   php artisan view:cache
-   ```
-
-2. **Configure variáveis de ambiente**
-   - `APP_ENV=production`
-   - `APP_DEBUG=false`
-   - Configure URLs e credenciais reais
-
-3. **Configure web server** (Nginx/Apache) para apontar para `public/`
-
 ## 📖 Documentação da API
 
 ### Visão Geral
@@ -203,7 +167,7 @@ A API do TaskFlow segue os princípios RESTful e utiliza JSON para comunicação
 
 ### Base URL
 ```
-http://localhost:8000/api/v1
+http://localhost:8000/api
 ```
 
 ### Formato de Resposta
@@ -411,225 +375,6 @@ docker-compose exec php php artisan config:show
 # Status da aplicação
 docker-compose exec php php artisan about
 ```
-
-## 🤝 Contribuindo
-
-Contribuições são bem-vindas! Por favor, siga estes passos:
-
-### Fluxo de Contribuição
-
-1. **Fork o repositório**
-   - Clique no botão "Fork" no GitHub
-   - Clone seu fork localmente
-
-2. **Crie uma branch para sua feature**
-   ```bash
-   git checkout -b feature/nova-funcionalidade
-   ```
-
-3. **Faça suas mudanças**
-   - Siga os padrões de código do projeto
-   - Adicione testes para novas funcionalidades
-   - Documente mudanças relevantes
-
-4. **Teste suas mudanças**
-   ```bash
-   # Execute todos os testes
-   php artisan test
-   
-   # Verifique o estilo do código
-   php artisan pint
-   ```
-
-5. **Commit suas mudanças**
-   ```bash
-   git commit -am 'feat: adiciona nova funcionalidade'
-   ```
-
-6. **Push para a branch**
-   ```bash
-   git push origin feature/nova-funcionalidade
-   ```
-
-7. **Abra um Pull Request**
-   - Descreva claramente suas mudanças
-   - Link para issues relacionadas
-   - Aguarde revisão
-
-### Diretrizes de Contribuição
-
-- **Código**: Siga os padrões PSR-12 e as convenções do Laravel
-- **Testes**: Mantenha cobertura de testes acima de 80%
-- **Commits**: Use [Conventional Commits](https://www.conventionalcommits.org/)
-- **Documentação**: Atualize README e comentários conforme necessário
-- **Branches**: Use prefixos: `feature/`, `bugfix/`, `hotfix/`, `docs/`
-
-### Tipos de Contribuições
-
-- 🐛 **Bug Fixes**: Correção de erros
-- ✨ **Features**: Novas funcionalidades
-- 📝 **Documentation**: Melhorias na documentação
-- 🎨 **Style**: Formatação e estilo de código
-- ♻️ **Refactor**: Refatoração de código
-- ⚡ **Performance**: Melhorias de performance
-- ✅ **Tests**: Adição ou melhoria de testes
-
-### Código de Conduta
-
-Por favor, siga nosso [Código de Conduta](CODE_OF_CONDUCT.md) em todas as interações.
-
-## 📝 Licença
-
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-### O que a Licença MIT Permite
-
-- ✅ Uso comercial
-- ✅ Modificação
-- ✅ Distribuição
-- ✅ Uso privado
-- ✅ Patente (com limitações)
-
-### O que Exige
-
-- ⚠️ Incluir a licença e copyright
-- ⚠️ Os autores não são responsáveis por danos
-
-## 🐛 Problemas e Sugestões
-
-Encontrou um bug ou tem uma sugestão? Por favor:
-
-1. **Verifique issues existentes**: [Issues](../../issues)
-2. **Crie uma nova issue**: Use templates apropriados
-3. **Forneça detalhes**: Inclua passos para reproduzir
-4. **Seja descritivo**: Use títulos claros e descrições detalhadas
-
-### Tipos de Issues
-
-- 🐛 **Bug Report**: Erros e problemas
-- ✨ **Feature Request**: Novas funcionalidades
-- 📝 **Documentation**: Problemas na documentação
-- ❓ **Question**: Dúvidas e esclarecimentos
-
-## 📞 Contato
-
-- **Projeto**: TaskFlow
-- **Autor**: [Seu Nome]
-- **Email**: [seu.email@exemplo.com]
-- **LinkedIn**: [Seu LinkedIn]
-- **GitHub**: [@seu-username](https://github.com/seu-username)
-
-## 🙏 Agradecimentos
-
-- A equipe **Laravel** pelo framework incrível
-- Comunidade **PHP** pelas ferramentas e bibliotecas
-- Todos os **contribuidores** que ajudam a melhorar o projeto
-
-## 📊 Estatísticas do Projeto
-
-![GitHub stars](https://img.shields.io/github/stars/username/taskflow?style=social)
-![GitHub forks](https://img.shields.io/github/forks/username/taskflow?style=social)
-![GitHub issues](https://img.shields.io/github/issues/username/taskflow)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/username/taskflow)
-
-## 🚀 Roadmap
-
-### Versão 1.0 (Atual)
-- ✅ Gestão básica de projetos
-- ✅ Sistema de tarefas
-- ✅ Autenticação de usuários
-- ✅ API RESTful
-- ✅ Interface responsiva
-
-### Versão 1.1 (Planejada)
-- 🔄 Notificações em tempo real
-- 🔄 Relatórios avançados
-- 🔄 Integração com Slack
-- 🔄 Upload de arquivos
-
-### Versão 2.0 (Futura)
-- 📋 Dashboard analítico
-- 📋 Gestão de equipes
-- 📋 Integração com calendários
-- 📋 Mobile app
-
-## 🔒 Segurança
-
-### Medidas de Segurança Implementadas
-- **Autenticação**: Tokens JWT via Laravel Sanctum
-- **Validação**: Validação rigorosa de inputs
-- **CSRF Protection**: Proteção contra ataques CSRF
-- **SQL Injection**: Uso de ORM Eloquent
-- **XSS Protection**: Escapamento automático de dados
-- **Rate Limiting**: Limitação de requisições
-
-### Boas Práticas de Segurança
-- Senhas hasheadas com bcrypt
-- Variáveis de ambiente para dados sensíveis
-- Logs de auditoria
-- Atualizações regulares de dependências
-
-## 🌍 Internacionalização
-
-O TaskFlow suporta múltiplos idiomas:
-- 🇧🇷 Português (Brasil)
-- 🇺🇸 Inglês
-- 🇪🇸 Espanhol (planejado)
-
-### Adicionando Novos Idiomas
-
-1. Crie o arquivo de idioma em `resources/lang/{codigo}/`
-2. Traduza as strings existentes
-3. Adicione o código em `config/app.php`
-4. Envie um Pull Request!
-
-## 📈 Performance
-
-### Métricas de Performance
-- **Tempo de resposta**: < 200ms (média)
-- **Uso de memória**: < 128MB (por requisição)
-- **Cache**: Redis para consultas frequentes
-- **CDN**: Assets otimizados
-
-### Otimizações
-- Lazy loading de relacionamentos
-- Query optimization
-- Asset minification
-- Database indexing
-
-## 🔄 CI/CD
-
-### Pipeline de Deploy
-
-1. **Build**: Testes automatizados
-2. **Quality**: Análise de código estático
-3. **Security**: Scan de vulnerabilidades
-4. **Deploy**: Deploy automático em produção
-
-### Ferramentas Utilizadas
-- **GitHub Actions**: CI/CD
-- **PHPUnit**: Testes automatizados
-- **Laravel Pint**: Formatação de código
-- **PHPStan**: Análise estática
-
-## 📚 Recursos Adicionais
-
-### Documentação
-- [Documentação Oficial Laravel](https://laravel.com/docs)
-- [Guia de Contribuição](CONTRIBUTING.md)
-- [Código de Conduta](CODE_OF_CONDUCT.md)
-- [Changelog](CHANGELOG.md)
-
-### Tutoriais e Guias
-- [Como começar](docs/getting-started.md)
-- [Guia da API](docs/api-guide.md)
-- [Deploy em Produção](docs/deployment.md)
-- [Solução de Problemas](docs/troubleshooting.md)
-
-### Comunidade
-- [Discord](https://discord.gg/taskflow)
-- [Forum](https://forum.taskflow.dev)
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/taskflow)
 
 ---
 
