@@ -380,8 +380,6 @@ docker-compose exec php php artisan about
 
 <div align="center">
 
-**Feito com ❤️ usando Laravel**
-
 [⬆ Voltar ao topo](#taskflow)
 
 </div>
