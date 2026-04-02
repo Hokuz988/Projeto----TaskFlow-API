@@ -6,7 +6,8 @@ use App\Models\Task;
 use App\Models\Tag;
 use Illuminate\Validation\ValidationException;
 
-class TagService{
+class TagService
+{
     public function getAll()
     {
         return Tag::all();
@@ -25,7 +26,16 @@ class TagService{
     }
     public function detachFromTask(Task $task, Tag $tag)
     {        $task->tags()->detach($tag->id);
-    return $task;
+        return $task;
+    }
+    public function update(Tag $tag, $data)
+    {
+        $tag->update($data);
+        return $tag;
+    }
 
+    public function delete(Tag $tag)
+    {
+        $tag->delete();
     }
 }

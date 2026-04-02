@@ -1,47 +1,76 @@
 <?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use  App\Services\TagService;
-    use App\Models\Task;
-    use App\Models\Tag;
-    use Illuminate\Http\Request;
+use App\Services\TagService;
+use App\Models\Task;
+use App\Models\Tag;
+use Illuminate\Http\Request;
 
-    class TagController extends Controller
+class TagController extends Controller
+{
+    protected $tagService;
+
+    public function __construct(TagService $tagService)
     {
-        protected $tagService;
+        $this->tagService = $tagService;
+    }
 
-        public function __construct(TagService $tagService)
-        {
-            $this->tagService = $tagService;
-        }
-
-        public function index()
-        {
+    public function index()
+    {
         $tags = $this->tagService->getAll();
         return response()->json(['data' => $tags]);
-        }
+    }
 
-        public function store(Request $request)
-        {
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'color' => 'nullable|string|max:7',
-            ]);
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'color' => 'nullable|string|max:7',
+        ]);
 
-            $tag = $this->tagService->create($validatedData);
-            return response()->json(['data' => $tag, 'message' => 'Tag criada com sucesso.']);
-        }
+        $tag = $this->tagService->create($validatedData);
+        return response()->json(['data' => $tag, 'message' => 'Tag criada com sucesso.']);
+    }
 
-        public function attachToTask(Request $request, Task $task, Tag $tag)
-        {
-            $this->tagService->attachToTask($task, $tag);
-            return response()->json(['message' => 'Tag anexada à tarefa com sucesso.']);
-        }
+    public function show(Tag $tag)
+    {
+        return response()->json(['data' => $tag]);
+    }
 
-        public function detachFromTask(Request $request, Task $task, Tag $tag)
-        {
-            $this->tagService->detachFromTask($task, $tag);
-            return response()->json(['message' => 'Tag removida da tarefa com sucesso.']);
+    public function update(Request $request, Tag $tag)
+    {
+        $validatedData = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'color' => 'sometimes|nullable|string|max:7',
+        ]);
+
+        try {
+            $tag->update($validatedData);
+            return response()->json(['data' => $tag, 'message' => 'Tag atualizada com sucesso.']);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao atualizar tag: ' . $e->getMessage(),
+                'error' => 'update_error'
+            ], 500);
         }
     }
+
+    public function destroy(Tag $tag)
+    {
+        $this->tagService->delete($tag);
+        return response()->json(['message' => 'Tag removida com sucesso.'], 204);
+    }
+
+    public function attachToTask(Request $request, Task $task, Tag $tag)
+    {
+        $this->tagService->attachToTask($task, $tag);
+        return response()->json(['message' => 'Tag anexada à tarefa com sucesso.']);
+    }
+
+    public function detachFromTask(Request $request, Task $task, Tag $tag)
+    {
+        $this->tagService->detachFromTask($task, $tag);
+        return response()->json(['message' => 'Tag removida da tarefa com sucesso.']);
+    }
+}

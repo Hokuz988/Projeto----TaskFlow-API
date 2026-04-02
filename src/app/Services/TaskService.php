@@ -21,7 +21,8 @@ class TaskService
         return $task;
     }
     public function delete(Task $task)
-    {        $task->delete();
+    {
+        $task->delete();
     }
     public function updateStatus(Task $task, $status)
     {

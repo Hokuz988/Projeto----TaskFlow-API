@@ -17,7 +17,7 @@ class Task extends Model
         'due_date',
     ];
 
-    protected $casts = [ 'due_date' => 'date', ];
+    protected $casts = [ 'due_date' => 'date'];
 
     public function project()
     {
@@ -26,6 +26,6 @@ class Task extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class) ->withTimestamps();
+        return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 }

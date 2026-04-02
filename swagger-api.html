@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow API Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.32.1/swagger-ui.css" />
+    <style>
+        *, *::before, *::after { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        :root {
+            --bg-deep: #0a0a0f;
+            --bg-surface: #111118;
+            --bg-elevated: #1a1a24;
+            --bg-code: #0d0d14;
+            --border-subtle: rgba(255,255,255,0.06);
+            --border-accent: rgba(139,92,246,0.3);
+            --text-primary: #e8e6f0;
+            --text-secondary: #9896a8;
+            --text-muted: #5d5b6e;
+            --accent-purple: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #22d3ee;
+            --accent-pink: #ec4899;
+            --accent-green: #34d399;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --gradient-main: linear-gradient(135deg, #8b5cf6, #3b82f6, #22d3ee);
+            --gradient-warm: linear-gradient(135deg, #ec4899, #8b5cf6);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --sidebar-width: 280px;
+            --font-display: 'Fraunces', serif;
+            --font-body: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --shadow-glow: 0 0 40px rgba(139,92,246,0.15);
+            --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+        }
+
+        html { 
+            scroll-behavior: smooth; 
+            scrollbar-width: thin; 
+            scrollbar-color: var(--accent-purple) var(--bg-deep); 
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        ::selection { 
+            background: rgba(139,92,246,0.35); 
+            color: #fff; 
+        }
+
+        ::-webkit-scrollbar { 
+            width: 6px; 
+        }
+
+        ::-webkit-scrollbar-track { 
+            background: var(--bg-deep); 
+        }
+
+        ::-webkit-scrollbar-thumb { 
+            background: var(--accent-purple); 
+            border-radius: 3px; 
+        }
+
+        /* ── Grain overlay ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* ── Hero Section ── */
+        .hero-section {
+            background: var(--gradient-main);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-section h1 {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            text-shadow: 0 0 40px rgba(139,92,246,0.3);
+        }
+
+        .hero-section .subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 24px;
+            font-weight: 300;
+        }
+
+        .hero-section .version-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: var(--radius-xl);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* ── Info Grid ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .info-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-main);
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-accent);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .info-card.primary::before { background: var(--gradient-main); }
+        .info-card.secondary::before { background: var(--gradient-warm); }
+        .info-card.success::before { background: linear-gradient(135deg, #34d399, #10b981); }
+
+        .info-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-primary);
+        }
+
+        .info-card .icon {
+            font-size: 1.5rem;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .info-card code {
+            background: var(--bg-code);
+            color: var(--accent-cyan);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .info-card pre {
+            background: var(--bg-code);
+            color: var(--text-primary);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            margin: 16px 0;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            border: 1px solid var(--border-subtle);
+            line-height: 1.5;
+        }
+
+        /* ── Swagger Container ── */
+        .swagger-container {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        /* ── Swagger UI Customization ── */
+        .swagger-ui {
+            background: transparent;
+        }
+
+        .swagger-ui .topbar {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 20px 24px;
+        }
+
+        .swagger-ui .topbar .download-url-wrapper {
+            display: none;
+        }
+
+        .swagger-ui .info {
+            margin: 0;
+            padding: 32px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .swagger-ui .info .title {
+            color: var(--text-primary);
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .swagger-ui .scheme-container {
+            background: var(--bg-elevated);
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .swagger-ui .opblock {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .swagger-ui .opblock.opblock-post {
+            border-color: var(--accent-green);
+            background: linear-gradient(135deg, rgba(52,211,153,0.1), rgba(16,185,129,0.05));
+        }
+
+        .swagger-ui .opblock.opblock-post .opblock-summary {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .swagger-ui .opblock.opblock-get {
+            border-color: var(--accent-cyan);
+            background: linear-gradient(135deg, rgba(34,211,238,0.1), rgba(6,182,212,0.05));
+        }
+
+        .swagger-ui .opblock.opblock-get .opblock-summary {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .swagger-ui .opblock.opblock-put {
+            border-color: var(--accent-orange);
+            background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(217,119,6,0.05));
+        }
+
+        .swagger-ui .opblock.opblock-put .opblock-summary {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .swagger-ui .opblock.opblock-delete {
+            border-color: var(--accent-red);
+            background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(185,28,28,0.05));
+        }
+
+        .swagger-ui .opblock.opblock-delete .opblock-summary {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .swagger-ui .opblock.opblock-patch {
+            border-color: var(--accent-purple);
+            background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(109,40,217,0.05));
+        }
+
+        .swagger-ui .opblock.opblock-patch .opblock-summary {
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .swagger-ui .btn.authorize {
+            background: var(--gradient-main);
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+        }
+
+        .swagger-ui .btn.authorize:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .swagger-ui .highlight-code {
+            background: var(--bg-code);
+            border-color: var(--border-subtle);
+        }
+
+        .swagger-ui .highlight-code .microlight {
+            color: var(--text-primary);
+        }
+
+        .swagger-ui .tab li {
+            background: var(--bg-elevated);
+            border-color: var(--border-subtle);
+        }
+
+        .swagger-ui .tab li.active {
+            background: var(--bg-surface);
+            border-color: var(--accent-purple);
+        }
+
+        .swagger-ui .tab li a {
+            color: var(--text-secondary);
+        }
+
+        .swagger-ui .tab li.active a {
+            color: var(--text-primary);
+        }
+
+        .swagger-ui .parameter__name {
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        .swagger-ui .parameter__type {
+            color: var(--accent-cyan);
+        }
+
+        .swagger-ui .model-box {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+        }
+
+        .swagger-ui .model .property {
+            color: var(--text-primary);
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            border-top: 1px solid var(--border-subtle);
+            background: var(--bg-surface);
+            margin-top: 80px;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            margin: 8px 0;
+            font-size: 0.9rem;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .container {
+                padding: 40px 15px;
+            }
+
+            .info-card {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section {
+                padding: 60px 15px;
+            }
+            
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>TaskFlow API</h1>
+            <p class="subtitle">Sistema de Gerenciamento de Projetos e Tarefas</p>
+            <div class="version-badge">v1.0.0</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="info-grid">
+            <div class="info-card primary">
+                <h3><span class="icon">📋</span> Informações da API</h3>
+                <p><strong>Versão:</strong> 1.0.0</p>
+                <p><strong>Base URL:</strong> <code>http://localhost:8000/api</code></p>
+                <p><strong>Formato:</strong> JSON</p>
+                <p><strong>Licença:</strong> MIT</p>
+                <p><strong>Especificação:</strong> OpenAPI 3.0.3</p>
+            </div>
+
+            <div class="info-card secondary">
+                <h3><span class="icon">🔐</span> Autenticação</h3>
+                <p>Para acessar os endpoints protegidos, inclua o header:</p>
+                <pre><code>Authorization: Bearer {seu-token}</code></pre>
+                <p><strong>Tipo:</strong> Bearer Token (Laravel Sanctum)</p>
+                <p><strong>Como obter token:</strong> Faça login através do endpoint de autenticação.</p>
+            </div>
+
+            <div class="info-card success">
+                <h3><span class="icon">⚡</span> Recursos Disponíveis</h3>
+                <p><strong>📁 Projetos:</strong> CRUD completo com gerenciamento de tarefas</p>
+                <p><strong>✅ Tarefas:</strong> Gestão detalhada com status e prioridades</p>
+                <p><strong>🏷️ Etiquetas:</strong> Sistema de categorização flexível</p>
+                <p><strong>👥 Usuários:</strong> Autenticação segura com Laravel Sanctum</p>
+                <p><strong>📊 Estatísticas:</strong> Relatórios e métricas em tempo real</p>
+            </div>
+        </div>
+
+        <div class="swagger-container">
+            <div id="swagger-ui"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>📚 TaskFlow API Documentation</p>
+        <p>Desenvolvido com ❤️ usando Laravel 12 e Swagger UI</p>
+        <p>&copy; 2024 TaskFlow Team. Todos os direitos reservados.</p>
+    </div>
+
+    <script src="https://unpkg.com/swagger-ui-dist@5.32.1/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.32.1/swagger-ui-standalone-preset.js"></script>
+    <script>
+        window.onload = function() {
+            const spec = {
+                "openapi": "3.0.3",
+                "info": {
+                    "title": "TaskFlow API Documentation",
+                    "description": "Documentação completa da API TaskFlow - Sistema de Gerenciamento de Projetos e Tarefas",
+                    "version": "1.0.0",
+                    "contact": {
+                        "name": "TaskFlow Team",
+                        "email": "support@taskflow.com"
+                    },
+                    "license": {
+                        "name": "MIT",
+                        "url": "https://opensource.org/licenses/MIT"
+                    }
+                },
+                "servers": [
+                    {
+                        "url": "http://localhost:8000/api",
+                        "description": "Servidor de Desenvolvimento"
+                    }
+                ],
+                "paths": {
+                    "/projects": {
+                        "get": {
+                            "tags": ["Projects"],
+                            "summary": "Listar todos os projetos",
+                            "description": "Retorna uma lista de todos os projetos com contagem de tarefas",
+                            "security": [{"sanctum": []}],
+                            "responses": {
+                                "200": {
+                                    "description": "Operação bem-sucedida",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "$ref": "#/components/schemas/Project"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        },
+                        "post": {
+                            "tags": ["Projects"],
+                            "summary": "Criar novo projeto",
+                            "description": "Cria um novo projeto no sistema",
+                            "security": [{"sanctum": []}],
+                            "requestBody": {
+                                "required": true,
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "required": ["user_id", "name"],
+                                            "properties": {
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1,
+                                                    "description": "ID do usuário dono do projeto"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Novo Projeto",
+                                                    "description": "Nome do projeto"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "nullable": true,
+                                                    "example": "Descrição do projeto",
+                                                    "description": "Descrição detalhada do projeto"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "enum": ["open", "in_progress", "completed"],
+                                                    "example": "open",
+                                                    "description": "Status do projeto"
+                                                },
+                                                "deadline": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "nullable": true,
+                                                    "example": "2024-12-31",
+                                                    "description": "Data limite do projeto"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "responses": {
+                                "201": {
+                                    "description": "Projeto criado com sucesso",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "$ref": "#/components/schemas/Project"
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Projeto criado com sucesso."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "422": {
+                                    "description": "Dados inválidos"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        }
+                    },
+                    "/projects/{id}": {
+                        "get": {
+                            "tags": ["Projects"],
+                            "summary": "Exibir projeto específico",
+                            "description": "Retorna os detalhes de um projeto específico com usuário e tarefas",
+                            "security": [{"sanctum": []}],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "in": "path",
+                                    "description": "ID do projeto",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Operação bem-sucedida",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "$ref": "#/components/schemas/Project"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "404": {
+                                    "description": "Projeto não encontrado"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        },
+                        "put": {
+                            "tags": ["Projects"],
+                            "summary": "Atualizar projeto",
+                            "description": "Atualiza os dados de um projeto existente",
+                            "security": [{"sanctum": []}],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "in": "path",
+                                    "description": "ID do projeto",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                }
+                            ],
+                            "requestBody": {
+                                "required": true,
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Projeto Atualizado"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "nullable": true,
+                                                    "example": "Descrição atualizada"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "enum": ["open", "in_progress", "completed"],
+                                                    "example": "in_progress"
+                                                },
+                                                "deadline": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "nullable": true,
+                                                    "example": "2024-12-31"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "responses": {
+                                "200": {
+                                    "description": "Projeto atualizado com sucesso",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "$ref": "#/components/schemas/Project"
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Projeto atualizado."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "422": {
+                                    "description": "Dados inválidos"
+                                },
+                                "404": {
+                                    "description": "Projeto não encontrado"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        },
+                        "delete": {
+                            "tags": ["Projects"],
+                            "summary": "Excluir projeto",
+                            "description": "Remove um projeto do sistema",
+                            "security": [{"sanctum": []}],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "in": "path",
+                                    "description": "ID do projeto",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                }
+                            ],
+                            "responses": {
+                                "204": {
+                                    "description": "Projeto removido com sucesso"
+                                },
+                                "404": {
+                                    "description": "Projeto não encontrado"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        }
+                    },
+                    "/projects/{project}/tasks": {
+                        "get": {
+                            "tags": ["Tasks"],
+                            "summary": "Listar tarefas de um projeto",
+                            "description": "Retorna todas as tarefas associadas a um projeto",
+                            "security": [{"sanctum": []}],
+                            "parameters": [
+                                {
+                                    "name": "project",
+                                    "in": "path",
+                                    "description": "ID do projeto",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Operação bem-sucedida",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "$ref": "#/components/schemas/Task"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        },
+                        "post": {
+                            "tags": ["Tasks"],
+                            "summary": "Criar nova tarefa",
+                            "description": "Cria uma nova tarefa em um projeto",
+                            "security": [{"sanctum": []}],
+                            "parameters": [
+                                {
+                                    "name": "project",
+                                    "in": "path",
+                                    "description": "ID do projeto",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                }
+                            ],
+                            "requestBody": {
+                                "required": true,
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "required": ["title", "status"],
+                                            "properties": {
+                                                "title": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Nova Tarefa",
+                                                    "description": "Título da tarefa"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "nullable": true,
+                                                    "example": "Descrição da tarefa",
+                                                    "description": "Descrição detalhada da tarefa"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "enum": ["pending", "in_progress", "completed"],
+                                                    "example": "pending",
+                                                    "description": "Status da tarefa"
+                                                },
+                                                "priority": {
+                                                    "type": "string",
+                                                    "enum": ["low", "medium", "high"],
+                                                    "example": "medium",
+                                                    "description": "Prioridade da tarefa"
+                                                },
+                                                "due_date": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "nullable": true,
+                                                    "example": "2024-12-31",
+                                                    "description": "Data de vencimento da tarefa"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "responses": {
+                                "201": {
+                                    "description": "Tarefa criada com sucesso",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "$ref": "#/components/schemas/Task"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "422": {
+                                    "description": "Dados inválidos"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        }
+                    },
+                    "/projects/{project}/tasks/{task}": {
+                        "get": {
+                            "tags": ["Tasks"],
+                            "summary": "Exibir tarefa específica",
+                            "description": "Retorna os detalhes de uma tarefa específica",
+                            "security": [{"sanctum": []}],
+                            "parameters": [
+                                {
+                                    "name": "project",
+                                    "in": "path",
+                                    "description": "ID do projeto",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                },
+                                {
+                                    "name": "task",
+                                    "in": "path",
+                                    "description": "ID da tarefa",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Operação bem-sucedida",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "$ref": "#/components/schemas/Task"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "404": {
+                                    "description": "Tarefa não encontrada"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        },
+                        "put": {
+                            "tags": ["Tasks"],
+                            "summary": "Atualizar tarefa",
+                            "description": "Atualiza os dados de uma tarefa existente",
+                            "security": [{"sanctum": []}],
+                            "parameters": [
+                                {
+                                    "name": "project",
+                                    "in": "path",
+                                    "description": "ID do projeto",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                },
+                                {
+                                    "name": "task",
+                                    "in": "path",
+                                    "description": "ID da tarefa",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                }
+                            ],
+                            "requestBody": {
+                                "required": true,
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "title": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Tarefa Atualizada"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "nullable": true,
+                                                    "example": "Descrição atualizada"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "enum": ["pending", "in_progress", "completed"],
+                                                    "example": "in_progress"
+                                                },
+                                                "priority": {
+                                                    "type": "string",
+                                                    "enum": ["low", "medium", "high"],
+                                                    "example": "high"
+                                                },
+                                                "due_date": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "nullable": true,
+                                                    "example": "2024-12-31"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "responses": {
+                                "200": {
+                                    "description": "Tarefa atualizada com sucesso",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "$ref": "#/components/schemas/Task"
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Tarefa atualizada."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "422": {
+                                    "description": "Dados inválidos"
+                                },
+                                "404": {
+                                    "description": "Tarefa não encontrada"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        },
+                        "delete": {
+                            "tags": ["Tasks"],
+                            "summary": "Excluir tarefa",
+                            "description": "Remove uma tarefa do sistema",
+                            "security": [{"sanctum": []}],
+                            "parameters": [
+                                {
+                                    "name": "project",
+                                    "in": "path",
+                                    "description": "ID do projeto",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                },
+                                {
+                                    "name": "task",
+                                    "in": "path",
+                                    "description": "ID da tarefa",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                }
+                            ],
+                            "responses": {
+                                "204": {
+                                    "description": "Tarefa removida com sucesso"
+                                },
+                                "404": {
+                                    "description": "Tarefa não encontrada"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        }
+                    },
+                    "/projects/{project}/tasks/{task}/status": {
+                        "patch": {
+                            "tags": ["Tasks"],
+                            "summary": "Alterar status da tarefa",
+                            "description": "Atualiza apenas o status de uma tarefa",
+                            "security": [{"sanctum": []}],
+                            "parameters": [
+                                {
+                                    "name": "project",
+                                    "in": "path",
+                                    "description": "ID do projeto",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                },
+                                {
+                                    "name": "task",
+                                    "in": "path",
+                                    "description": "ID da tarefa",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                }
+                            ],
+                            "requestBody": {
+                                "required": true,
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "required": ["status"],
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "enum": ["pending", "in_progress", "completed"],
+                                                    "example": "completed",
+                                                    "description": "Novo status da tarefa"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "responses": {
+                                "200": {
+                                    "description": "Status atualizado com sucesso",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "$ref": "#/components/schemas/Task"
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Status da tarefa atualizado."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "422": {
+                                    "description": "Dados inválidos"
+                                },
+                                "404": {
+                                    "description": "Tarefa não encontrada"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        }
+                    },
+                    "/tags": {
+                        "get": {
+                            "tags": ["Tags"],
+                            "summary": "Listar todas as etiquetas",
+                            "description": "Retorna uma lista de todas as etiquetas disponíveis",
+                            "security": [{"sanctum": []}],
+                            "responses": {
+                                "200": {
+                                    "description": "Operação bem-sucedida",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "$ref": "#/components/schemas/Tag"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        },
+                        "post": {
+                            "tags": ["Tags"],
+                            "summary": "Criar nova etiqueta",
+                            "description": "Cria uma nova etiqueta no sistema",
+                            "security": [{"sanctum": []}],
+                            "requestBody": {
+                                "required": true,
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "required": ["name"],
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "maxLength": 255,
+                                                    "example": "Urgente",
+                                                    "description": "Nome da etiqueta"
+                                                },
+                                                "color": {
+                                                    "type": "string",
+                                                    "maxLength": 7,
+                                                    "example": "#FF0000",
+                                                    "description": "Cor da etiqueta em formato hexadecimal"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "responses": {
+                                "201": {
+                                    "description": "Etiqueta criada com sucesso",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "data": {
+                                                        "$ref": "#/components/schemas/Tag"
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Tag criada com sucesso."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "422": {
+                                    "description": "Dados inválidos"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        }
+                    },
+                    "/tasks/{task}/tags/{tag}": {
+                        "post": {
+                            "tags": ["Tags"],
+                            "summary": "Associar etiqueta à tarefa",
+                            "description": "Vincula uma etiqueta a uma tarefa específica",
+                            "security": [{"sanctum": []}],
+                            "parameters": [
+                                {
+                                    "name": "task",
+                                    "in": "path",
+                                    "description": "ID da tarefa",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                },
+                                {
+                                    "name": "tag",
+                                    "in": "path",
+                                    "description": "ID da etiqueta",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Etiqueta associada com sucesso",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Tag anexada à tarefa com sucesso."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "404": {
+                                    "description": "Tarefa ou etiqueta não encontrada"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        },
+                        "delete": {
+                            "tags": ["Tags"],
+                            "summary": "Remover etiqueta da tarefa",
+                            "description": "Remove o vínculo entre uma etiqueta e uma tarefa",
+                            "security": [{"sanctum": []}],
+                            "parameters": [
+                                {
+                                    "name": "task",
+                                    "in": "path",
+                                    "description": "ID da tarefa",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                },
+                                {
+                                    "name": "tag",
+                                    "in": "path",
+                                    "description": "ID da etiqueta",
+                                    "required": true,
+                                    "schema": {
+                                        "type": "integer"
+                                    }
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Etiqueta removida com sucesso",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Tag removida da tarefa com sucesso."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "404": {
+                                    "description": "Tarefa ou etiqueta não encontrada"
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        }
+                    },
+                    "/user": {
+                        "get": {
+                            "tags": ["Authentication"],
+                            "summary": "Obter usuário autenticado",
+                            "description": "Retorna os dados do usuário autenticado",
+                            "security": [{"sanctum": []}],
+                            "responses": {
+                                "200": {
+                                    "description": "Operação bem-sucedida",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/User"
+                                            }
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Não autorizado"
+                                }
+                            }
+                        }
+                    }
+                },
+                "components": {
+                    "schemas": {
+                        "Project": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 1,
+                                    "description": "ID do projeto"
+                                },
+                                "user_id": {
+                                    "type": "integer",
+                                    "example": 1,
+                                    "description": "ID do usuário dono do projeto"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "example": "Novo Projeto",
+                                    "description": "Nome do projeto"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "example": "Descrição do projeto",
+                                    "description": "Descrição detalhada do projeto"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "enum": ["open", "in_progress", "completed"],
+                                    "example": "open",
+                                    "description": "Status atual do projeto"
+                                },
+                                "deadline": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "nullable": true,
+                                    "example": "2024-12-31",
+                                    "description": "Data limite do projeto"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "datetime",
+                                    "example": "2024-01-01T00:00:00.000000Z",
+                                    "description": "Data de criação"
+                                },
+                                "updated_at": {
+                                    "type": "string",
+                                    "format": "datetime",
+                                    "example": "2024-01-01T00:00:00.000000Z",
+                                    "description": "Data de atualização"
+                                }
+                            }
+                        },
+                        "Task": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 1,
+                                    "description": "ID da tarefa"
+                                },
+                                "project_id": {
+                                    "type": "integer",
+                                    "example": 1,
+                                    "description": "ID do projeto ao qual pertence a tarefa"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "example": "Nova Tarefa",
+                                    "description": "Título da tarefa"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "nullable": true,
+                                    "example": "Descrição da tarefa",
+                                    "description": "Descrição detalhada da tarefa"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "enum": ["pending", "in_progress", "completed"],
+                                    "example": "pending",
+                                    "description": "Status atual da tarefa"
+                                },
+                                "priority": {
+                                    "type": "string",
+                                    "enum": ["low", "medium", "high"],
+                                    "example": "medium",
+                                    "description": "Prioridade da tarefa"
+                                },
+                                "due_date": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "nullable": true,
+                                    "example": "2024-12-31",
+                                    "description": "Data de vencimento da tarefa"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "datetime",
+                                    "example": "2024-01-01T00:00:00.000000Z",
+                                    "description": "Data de criação"
+                                },
+                                "updated_at": {
+                                    "type": "string",
+                                    "format": "datetime",
+                                    "example": "2024-01-01T00:00:00.000000Z",
+                                    "description": "Data de atualização"
+                                }
+                            }
+                        },
+                        "Tag": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 1,
+                                    "description": "ID da etiqueta"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "example": "Urgente",
+                                    "description": "Nome da etiqueta"
+                                },
+                                "color": {
+                                    "type": "string",
+                                    "example": "#FF0000",
+                                    "description": "Cor da etiqueta em formato hexadecimal"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "datetime",
+                                    "example": "2024-01-01T00:00:00.000000Z",
+                                    "description": "Data de criação"
+                                },
+                                "updated_at": {
+                                    "type": "string",
+                                    "format": "datetime",
+                                    "example": "2024-01-01T00:00:00.000000Z",
+                                    "description": "Data de atualização"
+                                }
+                            }
+                        },
+                        "User": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 1,
+                                    "description": "ID do usuário"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "example": "João Silva",
+                                    "description": "Nome do usuário"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "joao@exemplo.com",
+                                    "description": "Email do usuário"
+                                },
+                                "email_verified_at": {
+                                    "type": "string",
+                                    "format": "datetime",
+                                    "nullable": true,
+                                    "example": "2024-01-01T00:00:00.000000Z",
+                                    "description": "Data de verificação do email"
+                                },
+                                "created_at": {
+                                    "type": "string",
+                                    "format": "datetime",
+                                    "example": "2024-01-01T00:00:00.000000Z",
+                                    "description": "Data de criação"
+                                },
+                                "updated_at": {
+                                    "type": "string",
+                                    "format": "datetime",
+                                    "example": "2024-01-01T00:00:00.000000Z",
+                                    "description": "Data de atualização"
+                                }
+                            }
+                        }
+                    },
+                    "securitySchemes": {
+                        "sanctum": {
+                            "type": "apiKey",
+                            "description": "Enter token in format (Bearer <token>)",
+                            "name": "Authorization",
+                            "in": "header"
+                        }
+                    }
+                },
+                "tags": [
+                    {
+                        "name": "Projects",
+                        "description": "Operações relacionadas a projetos"
+                    },
+                    {
+                        "name": "Tasks",
+                        "description": "Operações relacionadas a tarefas"
+                    },
+                    {
+                        "name": "Tags",
+                        "description": "Operações relacionadas a etiquetas"
+                    },
+                    {
+                        "name": "Authentication",
+                        "description": "Operações de autenticação"
+                    }
+                ]
+            };
+
+            SwaggerUIBundle({
+                url: '',
+                spec: spec,
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                defaultModelsExpandDepth: 2,
+                defaultModelExpandDepth: 2,
+                tryItOutEnabled: true,
+                displayRequestDuration: true,
+                docExpansion: "list",
+                filter: true,
+                supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+                onComplete: function() {
+                    console.log("Swagger UI carregado com sucesso!");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

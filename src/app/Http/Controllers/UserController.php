@@ -2,63 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\UserService;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function index()
     {
-        //
+        $users = $this->userService->getAll();
+        return response()->json(['data' => $users]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show(User $user)
     {
-        //
+        return response()->json(['data' => $user->load('projects', 'tasks')]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function update(Request $request, User $user)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,' . $user->id,
+            'password' => 'sometimes|string|min:6|confirmed',
+        ]);
+
+        $updated = $this->userService->update($user, $validated);
+        return response()->json(['data' => $updated, 'message' => 'Usuário atualizado.']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function destroy(User $user)
     {
-        //
+        $this->userService->delete($user);
+        return response()->json(['message' => 'Usuário removido.'], 204);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function projects(User $user)
     {
-        //
+        $projects = $this->userService->getUserProjects($user);
+        return response()->json(['data' => $projects]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function tasks(User $user)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $tasks = $this->userService->getUserTasks($user);
+        return response()->json(['data' => $tasks]);
     }
 }

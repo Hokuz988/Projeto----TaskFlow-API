@@ -17,15 +17,13 @@ class ProjectService
     {
         return Project::create($data);
     }
-    public function update($id, $data)
+    public function update($project, $data)
     {
-        $project = Project::findOrFail($id);
         $project->update($data);
         return $project;
     }
-    public function delete($id)
+    public function delete($project)
     {
-        $project = Project::findOrFail($id);
         $project->delete();
     }
 }

@@ -70,12 +70,17 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, Project $project, Task $task)
     {
+        // Verifica se a tarefa pertence ao projeto
+        if ($task->project_id != $project->id) {
+            return response()->json(['message' => 'Tarefa não pertence a este projeto.'], 404);
+        }
+        
         $data = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
+            'title' => 'sometimes|string|max:255',
             'description' => 'sometimes|nullable|string',
-            'status' => 'sometimes|required|in:pending,in_progress,completed',
+            'status' => 'sometimes|in:pending,in_progress,completed',
             'priority' => 'sometimes|nullable|in:low,medium,high',
             'due_date' => 'sometimes|nullable|date',
         ]);
@@ -94,8 +99,13 @@ class TaskController extends Controller
         $this->taskService->delete($task);
         return response()->json(['message' => 'Tarefa removida.'], 204);
     }
-    public function updatedStatus(Request $request, Task $task)
+    public function updateStatus(Request $request, Project $project, Task $task)
     {
+        // Verifica se a tarefa pertence ao projeto
+        if ($task->project_id != $project->id) {
+            return response()->json(['message' => 'Tarefa não pertence a este projeto.'], 404);
+        }
+        
         $data = $request->validate([
             'status' => 'required|in:pending,in_progress,completed',
         ]);
