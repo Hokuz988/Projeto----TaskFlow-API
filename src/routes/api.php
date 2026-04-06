@@ -18,7 +18,6 @@ Route::get('/user', function (Request $request) {
     return response()->json(['message' => 'Endpoint público para testes']);
 });
 
-// Rotas de projetos (sem autenticação)
 Route::apiResource('projects', ProjectController::class);
 
 Route::prefix('projects/{project}')->group(function () {
@@ -37,11 +36,9 @@ Route::put('tags/{tag}', [TagController::class, 'update']);
 Route::delete('tags/{tag}', [TagController::class, 'destroy']);
 Route::get('tags/{tag}', [TagController::class, 'show']);  
 
-// Rotas de relacionamento (ANTES das rotas de projetos para evitar conflito)
 Route::post('task-tags/attach/{task}/{tag}', [TagController::class, 'attachToTask']);   
 Route::delete('task-tags/detach/{task}/{tag}', [TagController::class, 'detachFromTask']);
 
-// Rotas de usuários (sem autenticação)
 Route::get('users', [UserController::class, 'index']);
 Route::get('users/{user}', [UserController::class, 'show']);
 Route::put('users/{user}', [UserController::class, 'update']);
